@@ -9,7 +9,15 @@
 
 ## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## How to use?
+1. Clone the repository
+2. Copy `.env.development` to `.env`
+3. Fill in `.env` file with `DB_DATABASE`, `DB_USERNAME`, and
+   `DB_PASSWORD` environment values
+4. Execute command `docker-compose build app`, to build application
+   image
+5. Execute command  `docker-compose run --rm composer install`, to
+   install application depedencies
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).
