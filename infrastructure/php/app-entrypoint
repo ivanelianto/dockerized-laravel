@@ -1,0 +1,5 @@
+#!/bin/sh
+
+php artisan optimize:clear -q
+
+exec docker-php-entrypoint "$@"

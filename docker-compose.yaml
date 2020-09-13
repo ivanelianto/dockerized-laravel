@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./infrastructure/php/Dockerfile
+    image: laravel:latest
+    env_file: .env
+    user: ${UID:-1000}:${GID:-1000}
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel
+  database:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+      MYSQL_PASSWORD: laravel
+      MYSQL_USER: laravel
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+  webserver:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www/html
+      - ./infrastructure/nginx:/etc/nginx/conf.d
+    networks:
+      - laravel
+  composer:
+    image: composer
+    user: ${UID:-1000}:${GID:-1000}
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  laravel:
+    driver: bridge
